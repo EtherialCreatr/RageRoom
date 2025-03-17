@@ -36,4 +36,15 @@ function Utility.InitTags()
     end
 end
 
+function Utility.Cleanup()
+    for i,v in CollectionService:GetTagged(tag) do
+        if v.Parent == workspace or v.Parent:IsA("Folder") and v.Parent.Parent == workspace then
+            if v:FindFirstChildWhichIsA("ClickDetector") then
+                v.ClickDetector:Destroy()
+            end
+            v:Destroy()
+        end
+    end
+end
+
 return Utility

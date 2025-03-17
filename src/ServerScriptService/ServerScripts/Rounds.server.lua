@@ -52,6 +52,7 @@ function StartRound()
         end
     end
 
+    Utility.Cleanup()
     Map:Destroy()
     RoundEnded = false
     StartRound()
