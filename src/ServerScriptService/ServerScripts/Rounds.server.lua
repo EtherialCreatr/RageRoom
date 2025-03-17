@@ -1,25 +1,27 @@
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
 local ServerScriptService = game:GetService("ServerScriptService")
 local ServerStorage = game:GetService("ServerStorage")
 local Modules = ServerScriptService.Modules
 local Utility = require(Modules.Utility)
 
 --// Round Settings
-local PlayersToStart = 1
-local IntermissionTime = 5
+local IntermissionTime = 10
 local RoundTime = 10
+local PlayersToStart = ReplicatedStorage.MatchConfig.PlayersNeeded.Value
+local Status = ReplicatedStorage.MatchConfig.Status
 local RoundEnded = false
 --//
 
 function StartRound()
-    --// Countdown
     if #game.Players:GetPlayers() < PlayersToStart then
         return
     end
-
+    
     local ParticipatingPlayers = {}
-
+    
+    --// Countdown
     for i = IntermissionTime, 1, -1 do
-        warn("Waiting for Intermission to End!")
+        Status.Value = "Intermission: "..i
         task.wait(1)
     end
 
@@ -32,9 +34,11 @@ function StartRound()
 
     coroutine.resume(coroutine.create(function()
         for i = RoundTime, 1, -1 do
-            warn("Waiting for Round to End!")
+            Status.Value = "Round Ends In: "..i
             task.wait(1)
         end
+        Status.Value = "Round Ended!"
+        task.wait(3)
         RoundEnded = true
     end))
 
@@ -46,12 +50,9 @@ function StartRound()
         if game.Players:FindFirstChild(player.Name) then
             Utility.AwardCoins(player,20) -- Award Coins for Participation
         end
-        warn("Awarded Participation Coins!")
     end
 
     Map:Destroy()
-    warn("Destroyed Map")
-
     RoundEnded = false
     StartRound()
 end
