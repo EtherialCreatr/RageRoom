@@ -10,9 +10,6 @@ end
 function Utility.InitTags()
     for _, asset in CollectionService:GetTagged(tag) do
         if asset.Parent == workspace or asset.Parent:IsA("Folder") then
-            local Detector = Instance.new("ClickDetector")
-            Detector.Parent = asset
-            
             local Config = asset:WaitForChild("Configuration")
             local Health
             if Config then
@@ -21,17 +18,6 @@ function Utility.InitTags()
                 Config = Instance.new("Configuration")
                 Config.Parent = asset
             end
-
-            Detector.MouseClick:Connect(function(playerWhoClicked)
-                Utility.AwardCoins(playerWhoClicked,playerWhoClicked.Damage.Value)
-                warn(asset.Name)
-                Health.Value = Health.Value - playerWhoClicked.Damage.Value
-                warn(Health.Value)
-                if Health.Value <= 0 then
-                    Detector:Destroy()
-                    asset:Destroy()
-                end
-            end)
         end
     end
 end
@@ -39,9 +25,6 @@ end
 function Utility.Cleanup()
     for i,v in CollectionService:GetTagged(tag) do
         if v.Parent == workspace or v.Parent:IsA("Folder") and v.Parent.Parent == workspace then
-            if v:FindFirstChildWhichIsA("ClickDetector") then
-                v.ClickDetector:Destroy()
-            end
             v:Destroy()
         end
     end

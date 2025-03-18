@@ -32,15 +32,17 @@ function StartRound()
     Map.Parent = workspace
     Utility.InitTags()
 
-    coroutine.resume(coroutine.create(function()
-        for i = RoundTime, 1, -1 do
-            Status.Value = "Round Ends In: "..i
-            task.wait(1)
-        end
-        Status.Value = "Round Ended!"
-        task.wait(3)
-        RoundEnded = true
-    end))
+    Status.Value = "Spawning Map"
+    task.wait(2)
+    
+    for i = RoundTime, 1, -1 do
+        Status.Value = "Round Ends In: "..i
+        task.wait(1)
+    end
+    Status.Value = "Round Ended!"
+    
+    task.wait(3)
+    RoundEnded = true
 
     repeat
         task.wait(1)
@@ -55,6 +57,8 @@ function StartRound()
     Utility.Cleanup()
     Map:Destroy()
     RoundEnded = false
+
+    task.wait(2)
     StartRound()
 end
 
