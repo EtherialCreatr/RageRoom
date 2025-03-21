@@ -40,8 +40,9 @@ function StartRound()
         task.wait(1)
     end
     Status.Value = "Round Ended!"
-    
-    task.wait(3)
+    task.wait(2)
+    Status.Value = "Resetting Game!"
+    task.wait(5)
     RoundEnded = true
 
     repeat
